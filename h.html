@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Cô Gái 18! ✨</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Comfortaa:wght@400;700&display=swap&subset=vietnamese" rel="stylesheet">
+    
+    <!-- Thư viện hiệu ứng pháo hoa -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Icon FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark-cute: #2b1622;
+            --pink-pastel: #ffb7c5;
+            --pink-deep: #ff8fab;
+            --pink-hot: #ff6f9c;
+            --yellow-pastel: #ffdac1;
+            --mint-pastel: #e2f0cb;
+            --paper-color: #fffaf2;
+            --night-navy: #161033;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+        
+        body {
+            background: radial-gradient(circle at 50% 0%, #fff3f7 0%, #ffd9e8 45%, #ffb8d4 100%);
+            font-family: 'Comfortaa', cursive;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 2000px;
+            position: relative;
+        }
+
+        /* NỀN SAO LẤP LÁNH */
+        .star-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.15; pointer-events: none; z-index: 1; mix-blend-mode: multiply;
+        }
+
+        /* HIỆU ỨNG CÁNH HOA BAY (TOÀN TRANG) */
+        .petal-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 50; overflow: hidden;
+        }
+        .petal {
+            position: absolute; top: -40px; will-change: transform, opacity;
+            font-size: 22px; opacity: 0.9; filter: drop-shadow(0 2px 4px rgba(255,143,171,0.4));
+            animation-name: petalFall; animation-timing-function: linear;
+        }
+        @keyframes petalFall {
+            0% { transform: translateY(-5vh) translateX(0) rotate(0deg); opacity: 0; }
+            8% { opacity: 0.95; }
+            50% { transform: translateY(50vh) translateX(40px) rotate(180deg); }
+            92% { opacity: 0.85; }
+            100% { transform: translateY(110vh) translateX(-30px) rotate(360deg); opacity: 0; }
+        }
+
+        /* KHUNG CHUẨN MÀN HÌNH */
+        .screen {
+            position: absolute; width: 100%; height: 100%;
+            top: 0; left: 0;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; z-index: 2;
+            transition: opacity 1.2s ease-in-out, visibility 1.2s;
+            padding: 20px;
+            text-align: center;
+        }
+        .active-screen { opacity: 1; visibility: visible; }
+
+        /* MÀN HÌNH 1: KHAI MÀN KÍCH HOẠT NHẠC */
+        #screen1 { background: radial-gradient(circle at 50% 30%, #fff3f7 0%, #ffc7dd 100%); }
+        .pulse-text { 
+            color: #b8255f; font-size: 20px; font-weight: 600; letter-spacing: 2px; 
+            margin-bottom: 30px; text-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+
+        /* MÀN HÌNH 2: HỘP QUÀ & NẾN — NỀN ĐÊM LUNG LINH */
+        #screen2 {
+            background: radial-gradient(ellipse at 50% 100%, #2b1a40 0%, #161033 60%, #0c0820 100%);
+            transition: opacity 1.2s ease-in-out, visibility 1.2s;
+        }
+        .night-sky {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; pointer-events: none; z-index: 0;
+        }
+        .twinkle-star {
+            position: absolute; border-radius: 50%; background: #fff;
+            box-shadow: 0 0 6px 1px rgba(255,255,255,0.8);
+            animation: twinkle ease-in-out infinite;
+        }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(0.7); } 50% { opacity: 1; transform: scale(1.2); } }
+        .night-moon {
+            position: absolute; top: 8%; right: 10%; font-size: 50px;
+            text-shadow: 0 0 25px rgba(255, 218, 193, 0.7); z-index: 0;
+            animation: bounceWiggle 4s infinite alternate ease-in-out;
+        }
+        .gift-title {
+            color: var(--pink-pastel); font-size: 40px; font-weight: 700; margin-bottom: 25px;
+            text-shadow: 0 0 15px rgba(255, 183, 197, 0.6); letter-spacing: 2px; position: relative; z-index: 2;
+        }
+        .album-title {
+            color: #b8255f; font-size: 26px; font-weight: 700; margin-bottom: 25px;
+            text-shadow: 0 1px 6px rgba(255,255,255,0.6); letter-spacing: 1px;
+        }
+        .gift-container {
+            background: rgba(255, 255, 255, 0.05); padding: 40px; border-radius: 30px;
+            border: 2px dashed var(--pink-pastel); max-width: 550px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3); backdrop-filter: blur(5px);
+            position: relative; z-index: 2;
+        }
+        .gift-box { font-size: 100px; animation: bounceWiggle 0.6s infinite alternate; margin-bottom: 15px; }
+        .package-text { color: #fff; font-size: 16px; margin-bottom: 30px; line-height: 1.8; opacity: 0.9; }
+        
+        .candle-wrapper { cursor: pointer; display: inline-block; position: relative; margin-top: 10px; }
+        .flame {
+            width: 16px; height: 26px; background: #ff9e00; border-radius: 50% 50% 20% 20%;
+            position: absolute; top: -24px; left: 7px; animation: flicker 0.1s infinite alternate;
+            box-shadow: 0 0 15px #ff9e00, 0 0 5px #fff;
+        }
+        .candle-stick { width: 30px; height: 65px; background: linear-gradient(to right, var(--pink-pastel), var(--pink-hot)); border-radius: 6px; }
+
+        /* MÀN HÌNH 3: CHỮ CHẠY TỰ ĐỘNG NỀN TIM + CHÓ CON CHẠY */
+        .wish-text-wrapper {
+            max-width: 700px; background: linear-gradient(135deg, #ff9ec7 0%, #ff6f9c 100%); padding: 45px 35px; border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 50px rgba(216, 60, 110, 0.4); margin: 20px; position: relative; z-index: 10;
+        }
+        .wish-text1 { color: #ffffff; font-size: 24px; line-height: 2; text-align: center; font-weight: 400; text-shadow: 0 1px 4px rgba(150,30,70,0.3); }
+
+        /* ĐÀN CHÓ CON NÔ ĐÙA */
+        .dog-playground {
+            position: absolute; bottom: 40px; left: -100px; width: calc(100% + 200px);
+            height: 100px; pointer-events: none; display: flex; gap: 60px;
+            animation: dogsWalk 18s infinite linear;
+        }
+        .puppy { font-size: 45px; animation: puppyPlay 0.5s infinite alternate ease-in-out; }
+        .puppy:nth-child(2) { animation-delay: 0.15s; }
+        .puppy:nth-child(3) { animation-delay: 0.3s; }
+        .puppy:nth-child(4) { animation-delay: 0.45s; }
+
+        /* MÀN HÌNH 4: ALBUM THIỆP 3D TƯƠNG TÁC */
+        .album-container {
+            display: flex; gap: 30px; justify-content: center; align-items: center;
+            flex-wrap: wrap; max-width: 1200px; margin-bottom: 30px; width: 100%;
+        }
+        .card-3d { width: 300px; height: 420px; perspective: 1000px; cursor: pointer; }
+        .card-inner {
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d;
+        }
+        .card-3d:hover .card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back {
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+            border-radius: 20px; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .card-front {
+            background: linear-gradient(135deg, #ffe5f0, #ffc2dc);
+            border: 2px dashed #ff6f9c; color: #b8255f;
+        }
+        .card-front i { font-size: 55px; margin-bottom: 20px; color: #ff6f9c; }
+        .card-front h3 { font-size: 20px; color: #a31c54; letter-spacing: 1px; font-weight: 700; }
+        .card-back {
+            background: var(--paper-color); color: #2d2d2d; transform: rotateY(180deg);
+            border-left: 5px solid var(--pink-deep); position: relative; overflow: hidden;
+        }
+        .card-paw-deco {
+            position: absolute; bottom: 10px; right: 14px; font-size: 26px;
+            opacity: 0.35; transform: rotate(-12deg); pointer-events: none;
+        }
+        .card-paw-deco2 {
+            position: absolute; top: 12px; right: 18px; font-size: 18px;
+            opacity: 0.3; transform: rotate(15deg); pointer-events: none;
+        }
+        .card-title-back { font-family: 'Mali', 'Segoe Print', 'Comic Sans MS', cursive; font-size: 30px; font-weight: 700; color: #ff6f9c; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .card-text-back { font-family: 'Mali', 'Segoe Print', 'Comic Sans MS', cursive; font-size: 21px; font-weight: 500; line-height: 1.65; text-align: left; white-space: pre-wrap; }
+
+        .btn-action {
+            background: linear-gradient(135deg, var(--pink-pastel), var(--pink-hot)); border: none; padding: 14px 35px;
+            border-radius: 30px; color: #fff; font-weight: bold; cursor: pointer; font-size: 15px;
+            font-family: 'Comfortaa'; transition: all 0.3s; box-shadow: 0 5px 15px rgba(255, 111, 156, 0.4);
+        }
+        .btn-action:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 20px rgba(255, 111, 156, 0.6); }
+
+        /* DÒNG XÁC NHẬN "EM ĐÃ ƯỚC XONG RỒI" */
+        .wish-confirm-line { color: #2d2d2d; font-size: 14px; margin-top: 16px; opacity: 0.75; }
+        .btn-confirm-wish {
+            background: linear-gradient(135deg, #fff4d6, var(--yellow-pastel)); border: none; padding: 10px 24px;
+            border-radius: 24px; color: #5a3d1d; font-weight: bold; cursor: pointer; font-size: 14px;
+            font-family: 'Comfortaa'; margin-top: 10px; transition: all 0.3s;
+            box-shadow: 0 5px 12px rgba(255, 218, 193, 0.5);
+        }
+        .btn-confirm-wish:hover { transform: translateY(-2px) scale(1.04); }
+
+        /* OVERLAY GỬI ĐIỀU ƯỚC CHO CÁC VÌ SAO */
+        .sending-stars-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 50% 100%, #2b1a40 0%, #161033 55%, #0c0820 100%);
+            z-index: 90; flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .sending-stars-text {
+            color: #fff; font-size: 22px; letter-spacing: 1px; text-align: center;
+            text-shadow: 0 0 12px rgba(255,183,197,0.6); z-index: 2; padding: 0 20px;
+            font-weight: 500;
+        }
+        .shooting-star {
+            position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%;
+            box-shadow: 0 0 8px 2px #fff;
+        }
+        .shooting-star::before {
+            content: ''; position: absolute; top: 50%; right: 0; width: 80px; height: 1px;
+            background: linear-gradient(to left, rgba(255,255,255,0.9), transparent);
+            transform: translateY(-50%);
+        }
+        @keyframes shootAcross {
+            0% { transform: translate(0, 0); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translate(-420px, 380px); opacity: 0; }
+        }
+        .wish-flying-emoji { font-size: 60px; z-index: 2; margin-bottom: 25px; animation: floatUpFade 2.4s ease-in forwards; }
+        @keyframes floatUpFade { 0% { transform: translateY(40px) scale(0.6); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(-60px) scale(1.1); opacity: 0; } }
+
+        /* MÀN HÌNH 5: THƯ TAY & MINI GAME CHO CHÓ ĂN */
+        .final-note-wrapper {
+            max-width: 600px; width: 100%; background: var(--paper-color); padding: 45px 40px;
+            box-shadow: 15px 15px 40px rgba(0,0,0,0.35); border-radius: 20px;
+            border-left: 8px solid var(--pink-deep); position: relative; margin-bottom: 30px;
+            transition: all 1.2s ease-in-out; transform-origin: left top; z-index: 5;
+        }
+        .final-note-wrapper::before { content: '📌'; position: absolute; top: -15px; left: 48%; font-size: 28px; }
+        .note-content { font-family: 'Mali', 'Segoe Print', 'Comic Sans MS', cursive; font-size: 24px; font-weight: 500; line-height: 42px; color: #2d2d2d; text-align: left; white-space: pre-wrap; letter-spacing: -0.2px; }
+
+        .flipped { transform: rotate(-110deg) translateY(300px) scale(0.5); opacity: 0; pointer-events: none; position: absolute; }
+
+        /* Khu vực Game cún con */
+        .dog-game-container {
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            animation: fadeInUp 1s ease-in-out forwards;
+        }
+        .hungry-dog { font-size: 85px; position: relative; animation: bounceWiggle 0.5s infinite alternate; }
+        .bark-bubble {
+            position: absolute; top: -20px; right: -50px; background: #fff; color: #333;
+            padding: 5px 12px; border-radius: 15px; font-size: 14px; font-weight: bold;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2); display: none;
+        }
+        .game-instruction { color: #b8255f; font-size: 16px; margin: 15px 0 20px 0; opacity: 0.95; font-weight: 600; text-shadow: 0 1px 4px rgba(255,255,255,0.7); }
+        .food-options { display: flex; gap: 20px; margin-bottom: 25px; }
+        .food-btn {
+            background: rgba(255,255,255,0.6); border: 2px dashed #ff6f9c;
+            font-size: 35px; padding: 15px 25px; border-radius: 20px; cursor: pointer;
+            transition: transform 0.2s; box-shadow: 0 6px 14px rgba(255,111,156,0.25);
+        }
+        .food-btn:hover { transform: scale(1.15); background: rgba(255,255,255,0.85); }
+
+        /* Giao diện tương lai ẩn phía sau */
+        .hourglass-container { display: none; flex-direction: column; align-items: center; animation: fadeInUp 1s ease-in-out; }
+        .hourglass-icon { font-size: 80px; color: var(--yellow-pastel); cursor: pointer; animation: rotateHourglass 2.5s infinite ease-in-out; text-shadow: 0 0 20px rgba(255, 218, 193, 0.5); }
+        .future-title { color: #b8255f; font-size: 24px; margin: 25px 0 20px 0; font-weight: 700; text-shadow: 0 1px 4px rgba(255,255,255,0.7); }
+        
+        .wish-note-paper {
+            background: rgba(255, 255, 255, 0.95); padding: 35px; border-radius: 24px; width: 450px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: none; margin-top: 15px;
+            border-top: 6px solid var(--yellow-pastel); position: relative; backdrop-filter: blur(5px);
+        }
+        .wish-note-paper textarea {
+            width: 100%; height: 100px; border: 2px dashed var(--pink-pastel);
+            border-radius: 12px; padding: 14px; font-family: 'Comfortaa'; resize: none; outline: none; font-size: 14px; background: #fffdf9; line-height: 1.6;
+        }
+
+        /* BẢNG THÔNG BÁO CUỐI CÙNG (THAY ALERT) */
+        .final-board {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: var(--paper-color); padding: 40px; border-radius: 24px; width: 90%; max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6); border-top: 8px solid var(--pink-pastel);
+            text-align: center; z-index: 100; animation: fadeInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .final-board-title { font-family: 'Mali', 'Segoe Print', 'Comic Sans MS', cursive; font-size: 32px; font-weight: 700; color: #ff6f9c; margin-bottom: 20px; }
+        .final-board-text { font-size: 16px; color: #333; line-height: 1.8; margin-bottom: 25px; }
+        .final-board-hbd {
+            font-family: 'Mali', 'Segoe Print', 'Comic Sans MS', cursive; font-size: 30px; font-weight: 700;
+            color: #fff; margin-top: 8px; padding: 14px 10px; border-radius: 16px;
+            background: linear-gradient(135deg, var(--pink-pastel), var(--pink-hot));
+            box-shadow: 0 8px 20px rgba(255, 111, 156, 0.45);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .album-container { gap: 15px; }
+            .card-3d { width: 90%; max-width: 320px; height: 260px; }
+            .card-text-back { font-size: 18px; line-height: 1.55; }
+            .card-title-back { font-size: 24px; }
+            .final-note-wrapper { padding: 25px; width: 95%; }
+            .note-content { font-size: 20px; line-height: 34px; }
+            .wish-note-paper { width: 90%; }
+            .dog-playground { bottom: 20px; }
+        }
+
+        /* ANIMATIONS */
+        @keyframes bounceWiggle { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-12px) scale(1.06); } }
+        @keyframes flicker { 0% { transform: scale(1); opacity: 0.9; } 100% { transform: scale(1.15); opacity: 1; } }
+        @keyframes rotateHourglass { 0%, 100% { transform: rotate(0deg); } 40%, 60% { transform: rotate(180deg); } }
+        @keyframes pulse { from { opacity: 0.4; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translate(-50%, -30%) scale(0.9); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+        @keyframes fadeInUpSimple { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @keyframes dogsWalk {
+            0% { transform: translateX(-10%); }
+            100% { transform: translateX(110%); }
+        }
+        @keyframes puppyPlay {
+            0% { transform: translateY(0) rotate(-5deg); }
+            100% { transform: translateY(-20px) rotate(5deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="star-bg"></div>
+    <div class="petal-layer" id="petalLayer"></div>
+
+    <!-- MÀN HÌNH 1: MÀN CHỜ KHAI MÀN (KÍCH HOẠT NHẠC) -->
+    <div class="screen active-screen" id="screen1">
+        <div class="pulse-text">🐶 ĐANG CHUẨN BỊ BẤT NGỜ CÙNG CÁC CHÚ CÚN... 🐾</div>
+        <button class="btn-action" style="font-size: 16px; padding: 16px 40px;" onclick="startExperience()">Bấm Vào Đây Để Mở Quà Thôi! 🐾</button>
+    </div>
+
+    <!-- MÀN HÌNH 2: THỔI NẾN MỞ HỘP QUÀ -->
+    <div class="screen" id="screen2">
+        <div class="night-sky" id="nightSky"></div>
+        <div class="night-moon">🌙</div>
+        <h1 class="gift-title">18-7</h1>
+        <div class="gift-container">
+            <div class="gift-box">🎁</div>
+            <div class="package-text">Có một bưu kiện đặc biệt chứa đầy tình cảm (và cả vài dấu chân cún dễ thương nữa). Hãy nhắm mắt ước một điều rồi bấm vào ngọn nến lung linh bên dưới để mở nhé!</div>
+            
+            <div class="candle-wrapper" onclick="openGiftBox()">
+                <div class="flame" id="flame"></div>
+                <div class="candle-stick"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH 3: LỜI CHÚC CHẠY CHỮ NỀN CHÓ CON NÔ ĐÙA -->
+    <div class="screen" id="screen3">
+        <div class="wish-text-wrapper">
+            <div class="wish-text1" id="typewriter1"></div>
+        </div>
+        
+        <!-- Đàn chó con chạy lon ton dưới chân -->
+        <div class="dog-playground">
+            <div class="puppy">🐕</div>
+            <div class="puppy">🦮</div>
+            <div class="puppy">🐕‍🦺</div>
+            <div class="puppy">🐩</div>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH 4: ALBUM THIỆP 3D TƯƠNG TÁC -->
+    <div class="screen" id="screen4">
+        <h2 class="album-title">Mở 3 Tấm Thiệp Tuổi 18 🐾</h2>
+        
+        <div class="album-container">
+            <!-- Thiệp 1 -->
+            <div class="card-3d">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <h3>Thiệp Số 01</h3>
+                        <p style="font-size: 12px; margin-top: 15px; opacity: 0.5;">(Rê chuột hoặc chạm để lật)</p>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-title-back">🎈 Niềm Vui</div>
+                        <div class="card-text-back">Chúc em tuổi 18 luôn giữ được sự lạc quan, nụ cười rạng rỡ và cả cái tính cách cáu kỉnh đáng yêu của em nữa nhé. Hãy luôn là chính mình, thật hạnh phúc và tự tin!</div>
+                        <div class="card-paw-deco">🐾</div>
+                        <div class="card-paw-deco2">🐾</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thiệp 2 -->
+            <div class="card-3d">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <i class="fa-solid fa-seedling"></i>
+                        <h3>Thiệp Số 02</h3>
+                        <p style="font-size: 12px; margin-top: 15px; opacity: 0.5;">(Rê chuột hoặc chạm để lật)</p>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-title-back">🌱 Kiên Cường</div>
+                        <div class="card-text-back">Anh biết tương lai em có rất nhiều dự định lớn và chắc chắn sẽ bận rộn vô cùng. Nhưng dù có đối mặt với áp lực ra sao, mong cô gái tuổi 18 luôn thật kiên cường, đừng bao giờ bỏ cuộc nha!</div>
+                        <div class="card-paw-deco">🐶</div>
+                        <div class="card-paw-deco2">🐾</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thiệp 3 -->
+            <div class="card-3d">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <i class="fa-solid fa-gamepad"></i>
+                        <h3>Thiệp Số 03</h3>
+                        <p style="font-size: 12px; margin-top: 15px; opacity: 0.5;">(Rê chuột hoặc chạm để lật)</p>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-title-back">🎮 Hậu Phương</div>
+                        <div class="card-text-back">Nếu em cảm thấy áp lực đè nặng quá, lúc nào cũng có thể trông cậy vào bọn anh. Cứ về Việt Nam chơi, cùng chiến game với đám bạn, hoặc làm "người mẫu ảnh" cho anh chụp cũng được nha. Dù em chọn con đường nào, hãy nhớ rằng bọn anh luôn ở phía sau ủng hộ em!</div>
+                        <div class="card-paw-deco">🐕</div>
+                        <div class="card-paw-deco2">🐾</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="next-btn-container">
+            <button class="btn-action" onclick="goToFinalScreen()">Bấm để mở thư tay bí mật ✉️</button>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH 5: THƯ TAY & MINI GAME CHO CHÓ ĂN -->
+    <div class="screen" id="screen5">
+        <div class="final-note-wrapper" id="finalNote">
+            <div class="note-content" id="typewriter2"></div>
+            <div class="card-paw-deco" style="opacity:0.3;">🐾</div>
+        </div>
+
+        <!-- Thử thách tương tác: Cho cún ăn để mở khóa tương lai -->
+        <div class="dog-game-container" id="dogGame">
+            <div class="hungry-dog" id="myDog">
+                🐶
+                <div class="bark-bubble" id="bark">Gâu Gâu! 🐾</div>
+            </div>
+            <div class="game-instruction" id="gameText">Một chú cún con đói bụng xuất hiện chặn đường! Hãy cho chú cún ăn để mở khóa điều ước tương lai nhé 👇</div>
+            <div class="food-options" id="foodButtons">
+                <button class="food-btn" onclick="feedDog('🥩')">🥩</button>
+                <button class="food-btn" onclick="feedDog('🦴')">🦴</button>
+            </div>
+        </div>
+
+        <!-- Đồng hồ cát tương lai -->
+        <div class="hourglass-container" id="hourglassContainer">
+            <div class="hourglass-icon" onclick="openFutureNote()"><i class="fa-solid fa-hourglass-start"></i></div>
+            <div class="future-title">Gửi một điều ước của em vào dòng thời gian</div>
+            
+            <div class="wish-note-paper" id="wishNotePaper">
+                <textarea placeholder="Gõ điều ước lớn nhất tuổi 18 của em vào đây nhé... ✨"></textarea>
+                <div class="wish-confirm-line">Viết xong rồi thì bấm nút bên dưới để gửi điều ước đi nhé 👇</div>
+                <button class="btn-confirm-wish" onclick="submitFutureWish()">Em đã ước xong rồi 💫</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY: ĐANG GỬI ĐIỀU ƯỚC CHO CÁC VÌ SAO -->
+    <div class="sending-stars-overlay" id="sendingStarsOverlay">
+        <div class="wish-flying-emoji">🌠</div>
+        <div class="sending-stars-text" id="sendingStarsText">Đang gửi điều ước của em cho những vì sao rồi...</div>
+    </div>
+
+    <!-- TẤM BẢNG THÔNG BÁO CUỐI CÙNG HIỂN THỊ THAY CHO CHỮ ALERT -->
+    <div class="final-board" id="finalBoard">
+        <div class="final-board-title">💘 Gửi Điều Ước Thành Công!</div>
+        <div class="final-board-text">Những vì sao đã nhận được điều ước tuổi 18 của em và sẽ giữ nó thật chặt trên dòng thời gian rực rỡ. Chú cún nhỏ cũng đang vẫy đuôi chúc mừng em đó! 🐾</div>
+        <div class="final-board-hbd">🎉 Happy Birthday Em Gái! 🎉</div>
+    </div>
+
+    <!-- NHẠC HAPPY BIRTHDAY ĐƯỢC TẠO TRỰC TIẾP BẰNG WEB AUDIO, KHÔNG CẦN FILE NHẠC NGOÀI -->
+
+    <script>
+        const textScreen3 = "Tuổi mới anh chúc em luôn giữ được sự lạc quan, nụ cười và tính cách cáu kỉnh của em, hãy luôn luôn giữ lấy nó nhé! Happy birthday cô gái tuổi 18 🎂✨";
+        const textScreen5 = "Gửi em, cô gái tuổi 18...\nCho dù ngoài kia áp lực có lớn đến đâu, thế giới có quay lưng đi chăng nữa, thì lúc nào mệt mỏi quá cũng hãy nhớ tìm đến bọn anh nhé. Bọn anh sẽ luôn ở đây làm điểm tựa và đồng hành cùng em.\n\nChúc em một hành trình mới rực rỡ và bình an! 💖";
+
+        const s1 = document.getElementById('screen1');
+        const s2 = document.getElementById('screen2');
+        const s3 = document.getElementById('screen3');
+        const s4 = document.getElementById('screen4');
+        const s5 = document.getElementById('screen5');
+
+        // ====== NHẠC HAPPY BIRTHDAY TỔNG HỢP BẰNG WEB AUDIO (KHÔNG CẦN FILE NGOÀI) ======
+        let audioCtx = null;
+        const NOTE_FREQ = { G4: 392.00, A4: 440.00, B4: 493.88, C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99 };
+        // Giai điệu cổ điển "Happy Birthday to you" (giai điệu thuộc phạm vi công cộng)
+        const melody = [
+            ['G4',0.28],['G4',0.22],['A4',0.5],['G4',0.5],['C5',0.5],['B4',1.0],null,
+            ['G4',0.28],['G4',0.22],['A4',0.5],['G4',0.5],['D5',0.5],['C5',1.0],null,
+            ['G4',0.28],['G4',0.22],['G5',0.5],['E5',0.5],['C5',0.5],['B4',0.5],['A4',1.0],null,
+            ['F5',0.28],['F5',0.22],['E5',0.5],['C5',0.5],['D5',0.5],['C5',1.0]
+        ];
+        function playHappyBirthdayMelody() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                let t = audioCtx.currentTime + 0.1;
+                melody.forEach(note => {
+                    if (!note) { t += 0.12; return; }
+                    const [name, dur] = note;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = NOTE_FREQ[name];
+                    gain.gain.setValueAtTime(0.0001, t);
+                    gain.gain.linearRampToValueAtTime(0.18, t + 0.04);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+                    osc.connect(gain).connect(audioCtx.destination);
+                    osc.start(t);
+                    osc.stop(t + dur + 0.05);
+                    t += dur + 0.05;
+                });
+                // Lặp lại giai điệu nhẹ nhàng sau khi kết thúc
+                setTimeout(playHappyBirthdayMelody, (t - audioCtx.currentTime) * 1000 + 1800);
+            } catch (e) { console.log('Không thể phát nhạc:', e); }
+        }
+
+        // ====== CÁNH HOA HỒNG BAY KHẮP TRANG ======
+        const petalEmojis = ['🌸', '🌺', '💮', '🌷'];
+        function spawnPetal() {
+            const layer = document.getElementById('petalLayer');
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+            const startLeft = Math.random() * 100;
+            const duration = 7 + Math.random() * 6;
+            const size = 14 + Math.random() * 16;
+            petal.style.left = startLeft + 'vw';
+            petal.style.fontSize = size + 'px';
+            petal.style.animationDuration = duration + 's';
+            layer.appendChild(petal);
+            setTimeout(() => petal.remove(), duration * 1000 + 200);
+        }
+        for (let i = 0; i < 6; i++) { setTimeout(() => spawnPetal(), i * 600); }
+        setInterval(spawnPetal, 900);
+
+        // ====== BẦU TRỜI ĐÊM LUNG LINH NHIỀU ÁNH SAO CHO MÀN HÌNH 2 ======
+        let nightSkyBuilt = false;
+        function buildNightSky() {
+            if (nightSkyBuilt) return;
+            nightSkyBuilt = true;
+            const sky = document.getElementById('nightSky');
+            for (let i = 0; i < 70; i++) {
+                const star = document.createElement('div');
+                star.className = 'twinkle-star';
+                const size = 1 + Math.random() * 2.5;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDuration = (1.5 + Math.random() * 2.5) + 's';
+                star.style.animationDelay = (Math.random() * 3) + 's';
+                sky.appendChild(star);
+            }
+        }
+        buildNightSky();
+
+        function typewriterEffect(elementId, text, speed, callback) {
+            let index = 0;
+            const target = document.getElementById(elementId);
+            target.innerHTML = "";
+            function play() {
+                if (index < text.length) {
+                    target.innerHTML += text.charAt(index);
+                    index++;
+                    setTimeout(play, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            play();
+        }
+
+        // BẮT ĐẦU TRẢI NGHIỆM VÀ KÍCH HOẠT NHẠC NGAY LẬP TỨC
+        function startExperience() {
+            playHappyBirthdayMelody();
+
+            // Hiệu ứng pháo hoa chào mừng lúc bấm nút
+            let duration = 2000;
+            let end = Date.now() + duration;
+            (function firework() {
+                confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0, y: 0.8 } });
+                confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1, y: 0.8 } });
+                if (Date.now() < end) { requestAnimationFrame(firework); }
+            }());
+
+            setTimeout(() => {
+                s1.classList.remove('active-screen');
+                s2.classList.add('active-screen');
+            }, 1000);
+        }
+
+        // MÀN HÌNH 2: Thổi nến -> Hiện Mưa Dấu Chân Cún + Tim
+        function openGiftBox() {
+            document.getElementById('flame').style.display = 'none';
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+
+            setTimeout(() => {
+                s2.classList.remove('active-screen');
+                s3.classList.add('active-screen');
+                
+                // Hiệu ứng mưa tim bay lãng mạn nền màn 3
+                let heartEnd = Date.now() + 6000;
+                (function heartRain() {
+                    if (Date.now() > heartEnd) return;
+                    confetti({
+                        particleCount: 3, spread: 40, origin: { x: Math.random(), y: Math.random() - 0.2 },
+                        colors: ['#ff9aa2', '#ffb7b2', '#ff7b7b']
+                    });
+                    requestAnimationFrame(heartRain);
+                }());
+
+                setTimeout(() => {
+                    typewriterEffect('typewriter1', textScreen3, 55, () => {
+                        setTimeout(() => {
+                            s3.classList.remove('active-screen');
+                            s4.classList.add('active-screen');
+                        }, 5000); // Xem chó chạy rồi qua màn 4
+                    });
+                }, 800);
+            }, 1200);
+        }
+
+        // MÀN HÌNH 4 -> MÀN HÌNH 5 (Thư tay)
+        function goToFinalScreen() {
+            s4.classList.remove('active-screen');
+            s5.classList.add('active-screen');
+            
+            setTimeout(() => {
+                typewriterEffect('typewriter2', textScreen5, 50, () => {
+                    setTimeout(() => {
+                        // Thư tay bay đi
+                        document.getElementById('finalNote').classList.add('flipped');
+                        setTimeout(() => {
+                            // Hiện trò chơi cún con ăn thức ăn
+                            document.getElementById('dogGame').style.display = 'flex';
+                        }, 800);
+                    }, 8000);
+                });
+            }, 800);
+        }
+
+        // Tương tác cho chó ăn
+        function feedDog(food) {
+            document.getElementById('myDog').innerHTML = "🐕💖<div class='bark-bubble' id='bark' style='display:block;'>Gâu Gâu! vẫy đuôi... 🐾</div>";
+            document.getElementById('gameText').innerHTML = "Cún con đã ăn " + food + " rất ngon miệng và tặng bạn chiếc đồng hồ cát bí ẩn!";
+            document.getElementById('foodButtons').style.display = 'none';
+
+            // Tạo hiệu ứng nổ bong bóng tim vui mừng
+            confetti({ particleCount: 50, spread: 60, colors: ['#ffdac1', '#ffb7b2'] });
+
+            setTimeout(() => {
+                document.getElementById('dogGame').style.display = 'none';
+                document.getElementById('hourglassContainer').style.display = 'flex';
+                // Tự động mở khung viết điều ước để bé thấy ngay, không cần bấm thêm
+                setTimeout(() => openFutureNote(), 900);
+            }, 2500);
+        }
+
+        function openFutureNote() {
+            document.getElementById('wishNotePaper').style.display = 'block';
+        }
+
+        // KHI BẤM "EM ĐÃ ƯỚC XONG RỒI": HIỆN HIỆU ỨNG GỬI ĐIỀU ƯỚC CHO CÁC VÌ SAO RỒI MỚI KẾT THÚC
+        function submitFutureWish() {
+            document.getElementById('wishNotePaper').style.display = 'none';
+            document.getElementById('hourglassContainer').style.display = 'none';
+
+            const overlay = document.getElementById('sendingStarsOverlay');
+            overlay.style.display = 'flex';
+
+            // Tạo vài ngôi sao băng bay ngang qua màn hình
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const star = document.createElement('div');
+                    star.className = 'shooting-star';
+                    star.style.top = (10 + Math.random() * 60) + '%';
+                    star.style.right = (-10 + Math.random() * 30) + '%';
+                    star.style.animation = `shootAcross ${0.9 + Math.random() * 0.6}s linear forwards`;
+                    overlay.appendChild(star);
+                    setTimeout(() => star.remove(), 1600);
+                }, i * 220);
+            }
+
+            // Đổi câu chữ khi điều ước đã "bay" tới các vì sao
+            setTimeout(() => {
+                document.getElementById('sendingStarsText').textContent = 'Điều ước của em đã được gửi đến những vì sao rồi! ✨';
+            }, 2200);
+
+            let heartDuration = 2600;
+            let heartEnd = Date.now() + heartDuration;
+            (function finalHeartRain() {
+                if (Date.now() > heartEnd) return;
+                confetti({
+                    particleCount: 5, angle: 90, spread: 60, origin: { x: Math.random(), y: Math.random() - 0.1 },
+                    colors: ['#ff9aa2', '#ffb7c5', '#ffdac1']
+                });
+                requestAnimationFrame(finalHeartRain);
+            }());
+
+            // Hiện tấm bảng "Happy Birthday Em Gái" thay cho alert()
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                document.getElementById('finalBoard').style.display = 'block';
+                confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 }, colors: ['#ff8fab', '#ffb7c5', '#ffdac1', '#fff4d6'] });
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
